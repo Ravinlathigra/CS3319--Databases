@@ -1,0 +1,46 @@
+SHOW DATABASES;
+DROP DATABASE IF EXISTS rlathigrassign2db;
+CREATE DATABASE rlathigrassign2db;
+
+USE rlathigrassign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON yourwesternuseridassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+
+SHOW TABLES;
+
+CREATE TABLE agent (agentid VARCHAR(2) PRIMARY KEY, 
+                    fname VARCHAR(30), 
+                    lname VARCHAR(30),
+                    city VARCHAR(15),
+                    commission FLOAT
+                    );
+               
+CREATE TABLE customer (customerid VARCHAR(2) PRIMARY KEY, 
+                       agentid VARCHAR(2),
+                       fname VARCHAR(30), 
+                       lname VARCHAR(30),
+                       city VARCHAR(15),
+                       phoneno VARCHAR(20),
+                       FOREIGN KEY (agentid) REFERENCES agent(agentid)
+                      );
+
+CREATE TABLE product (productid VARCHAR(2) PRIMARY KEY, 
+                      descr VARCHAR(20),
+                      cost FLOAT, 
+                      quantity INT
+                      );
+                       
+CREATE TABLE transaction (customerid VARCHAR(2),
+                          productid VARCHAR(2),
+                          purquant INT,
+                          PRIMARY KEY (customerid,productid),
+                          FOREIGN KEY (customerid) REFERENCES customer(customerid),
+                          FOREIGN KEY (productid) REFERENCES product(productid)
+                         );
+                      
+SHOW TABLES;
