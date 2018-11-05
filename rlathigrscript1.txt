@@ -20,12 +20,12 @@ CREATE TABLE agent (agentid VARCHAR(2) PRIMARY KEY,
                     commission FLOAT
                     );
                
-CREATE TABLE customer (customerid VARCHAR(2) PRIMARY KEY, 
-                       agentid VARCHAR(2),
+CREATE TABLE customer (customerid VARCHAR(2) PRIMARY KEY,
                        fname VARCHAR(30), 
                        lname VARCHAR(30),
                        city VARCHAR(15),
                        phoneno VARCHAR(20),
+		       agentid VARCHAR(2),
                        FOREIGN KEY (agentid) REFERENCES agent(agentid)
                       );
 
@@ -37,7 +37,7 @@ CREATE TABLE product (productid VARCHAR(2) PRIMARY KEY,
                        
 CREATE TABLE transaction (customerid VARCHAR(2),
                           productid VARCHAR(2),
-                          purquant INT,
+                          purchquant INT,
                           PRIMARY KEY (customerid,productid),
                           FOREIGN KEY (customerid) REFERENCES customer(customerid),
                           FOREIGN KEY (productid) REFERENCES product(productid)
