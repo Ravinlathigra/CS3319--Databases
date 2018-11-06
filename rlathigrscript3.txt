@@ -1,0 +1,86 @@
+USE rlathigrassign2db;
+
+-- Query 1
+
+SELECT descr FROM product;
+
+-- Query 2
+
+SELECT DISTINCT city FROM customer;
+
+-- Query 3
+
+SELECT * FROM agent
+ORDER BY city;
+
+-- Query 4
+
+SELECT fname,lname FROM customer
+WHERE city="Springfield";
+
+-- Query 5
+
+SELECT lname FROM customer
+WHERE agentid IN (SELECT agentid FROM agent WHERE fname = "Regis");
+
+-- Query 6
+
+SELECT descr FROM product
+WHERE descr LIKE "%pad%";
+
+-- Query 7
+
+SELECT customer.lname, product.descr, transaction.purchquant FROM customer, product, transaction
+WHERE customer.customerid = transaction.customerid AND transaction.productid = product.productid;
+
+-- Query 8
+
+SELECT sum(purchquant) as "Homer's Total Purchases" FROM transaction
+WHERE customerid = (SELECT customerid FROM customer WHERE fname = "Homer");
+
+-- QUERY 9
+SELECT customer.fname, customer.lname, sum(transaction.purchquant) 
+FROM customer,transaction WHERE customer.customerid = transaction.customerid 
+GROUP BY transaction.customerid;
+
+-- QUERY 10
+SELECT descr, quantity FROM product 
+WHERE product.productid NOT IN (SELECT DISTINCT productid FROM transaction);
+
+-- QUERY 11
+SELECT descr, quantity FROM product
+WHERE productid NOT IN (SELECT productid FROM transaction 
+                        WHERE customerid = (SELECT customerid FROM customer 
+                                            WHERE fname='Fred' AND lname='Flinstone'));
+
+-- QUERY 12
+SELECT customer.fname,customer.lname, agent.fname,agent.lname 
+FROM customer, agent 
+WHERE customer.city = agent.city AND agent.agentid = customer.agentid;
+
+-- QUERY 13
+SELECT sum(purchquant) as 'Total number of purchased knee pads' FROM transaction 
+WHERE productid = (SELECT productid FROM product 
+                   WHERE descr = 'knee pads');
+
+-- QUERY 14
+SELECT product.descr 
+FROM product 
+WHERE product.productid IN (SELECT productid 
+                            FROM transaction 
+                            GROUP BY transaction.productid HAVING COUNT(purchquant) >3) ;
+
+-- QUERY 15
+SELECT fname, lname FROM agent 
+WHERE agentid IN (SELECT agentid FROM customer 
+                  WHERE customer.customerid IN (SELECT customerid FROM transaction 
+                                                WHERE productid = (SELECT productid FROM product 
+                                                                   WHERE descr = 'knee pads')));
+
+
+
+
+
+
+
+
