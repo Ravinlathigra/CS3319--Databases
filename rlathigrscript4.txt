@@ -1,0 +1,27 @@
+USE rlathigrassign2db;
+
+SELECT * FROM customer;
+SELECT * FROM agent;
+SELECT * FROM product;
+SELECT * FROM transaction;
+
+CREATE VIEW customer_transactions 
+AS SELECT customer.fname, customer.lname, product.descr,product.cost, transaction.purchquant, product.cost*transaction.purchquant AS total_cost 
+FROM customer,product, transaction 
+WHERE product.productid = transaction.productid AND customer.customerid = transaction.customerid 
+ORDER BY customer.lname ASC;
+
+SELECT * FROM customer_transactions;
+
+SELECT * FROM customer_transactions 
+WHERE customer_transactions.lname IN ( SELECT lname 
+                                       FROM customer_transactions 
+                                       GROUP BY lname HAVING sum(total_cost)>100);
+
+DELETE FROM product WHERE descr = "should pads";
+
+SELECT descr FROM product WHERE descr = "shoulder pads";
+
+DELETE FROM agent WHERE city= "Springfield";
+-- DELETE CASCADE was not added when defining our agent table therefore since agent is a foreign key in the customer table it cannot be deleted
+ 
